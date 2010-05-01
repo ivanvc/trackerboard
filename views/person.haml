@@ -1,0 +1,9 @@
+%div
+  %a{:href => '/dash'}
+    Back to dash
+%div
+  %h2= "<a href=\"/people/#{@person.id}\">#{@person.name}</a> (#{@person.initials})"
+  %ul
+    - for state in %w{stated finished delivered accepted rejected unstarted unscheduled}
+      - for story in @person.stories.all(:state => state)
+        %li= "#{state}: <a href=\"#{story.url}\">#{story.name}</a> (#{story.type})"

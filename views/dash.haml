@@ -1,0 +1,10 @@
+- for person in @people
+  %div
+    %h2= "<a href=\"/people/#{person.id}\">#{person.name}</a> (#{person.initials})"
+    %ul
+      - for story in person.stories.all(:state => 'started')
+        %li= "#{story.state}: <a href=\"#{story.url}\">#{story.name}</a> (#{story.type})"
+      - for story in person.stories.all(:state => 'finished')
+        %li= "#{story.state}: <a href=\"#{story.url}\">#{story.name}</a> (#{story.type})"
+      - for story in person.stories.all(:state => ['delivered', 'accepted'])
+        %li= "#{story.state}: <a href=\"#{story.url}\">#{story.name}</a> (#{story.type})"

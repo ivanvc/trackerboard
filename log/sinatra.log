@@ -1,0 +1,57 @@
+ ~ (0.000319) PRAGMA table_info("people")
+ ~ (0.000021) PRAGMA table_info("people")
+ ~ (0.000013) PRAGMA table_info("people")
+ ~ (0.000013) PRAGMA table_info("people")
+ ~ (0.000013) PRAGMA table_info("people")
+ ~ (0.000041) PRAGMA table_info("projects")
+ ~ (0.000027) PRAGMA table_info("projects")
+ ~ (0.000015) PRAGMA table_info("projects")
+ ~ (0.000032) PRAGMA table_info("projects")
+ ~ (0.000014) PRAGMA table_info("projects")
+ ~ (0.000013) PRAGMA table_info("projects")
+ ~ (0.000030) PRAGMA table_info("stories")
+ ~ (0.000020) PRAGMA table_info("stories")
+ ~ (0.000015) PRAGMA table_info("stories")
+ ~ (0.000015) PRAGMA table_info("stories")
+ ~ (0.000015) PRAGMA table_info("stories")
+ ~ (0.000014) PRAGMA table_info("stories")
+ ~ (0.000015) PRAGMA table_info("stories")
+ ~ (0.000021) PRAGMA table_info("stories")
+ ~ (0.000021) PRAGMA table_info("stories")
+ ~ (0.000015) PRAGMA table_info("stories")
+ ~ (0.000015) PRAGMA table_info("stories")
+ ~ (0.000019) PRAGMA table_info("person_projects")
+ ~ (0.000012) PRAGMA table_info("person_projects")
+ ~ (0.000012) PRAGMA table_info("person_projects")
+ ~ (0.000075) SELECT "id", "name", "initials", "email" FROM "people" WHERE "id" = 259806 ORDER BY "id" LIMIT 1
+ ~ (0.000091) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("owner_id" = 259806 AND "state" = 'started') ORDER BY "id"
+ ~ (0.000071) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("state" = 'finished' AND "owner_id" = 259806) ORDER BY "id"
+ ~ (0.000079) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("state" IN ('delivered', 'accepted', 'rejected') AND "owner_id" = 259806) ORDER BY "id"
+ ~ (0.000064) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("owner_id" = 259806 AND "state" = 'unstarted') ORDER BY "id"
+ ~ (0.000079) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("owner_id" = 259806 AND "state" = 'unscheduled') ORDER BY "id"
+ ~ (0.000279) SELECT "id", "name", "initials", "email" FROM "people" ORDER BY "id"
+ ~ (0.000093) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE "owner_id" IN (259790, 259803, 259804, 259805, 259806, 259807, 259833) ORDER BY "id"
+ ~ (0.000073) SELECT "id", "name", "initials", "email" FROM "people" WHERE "id" = 259790 ORDER BY "id" LIMIT 1
+ ~ (0.000095) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("owner_id" = 259790 AND "state" = 'started') ORDER BY "id"
+ ~ (0.000090) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("state" = 'finished' AND "owner_id" = 259790) ORDER BY "id"
+ ~ (0.000080) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("state" IN ('delivered', 'accepted', 'rejected') AND "owner_id" = 259790) ORDER BY "id"
+ ~ (0.000065) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("owner_id" = 259790 AND "state" = 'unstarted') ORDER BY "id"
+ ~ (0.000071) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("owner_id" = 259790 AND "state" = 'unscheduled') ORDER BY "id"
+ ~ (0.000079) SELECT "id", "name", "initials", "email" FROM "people" ORDER BY "id"
+ ~ (0.000100) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE "owner_id" IN (259790, 259803, 259804, 259805, 259806, 259807, 259833) ORDER BY "id"
+ ~ (0.000070) SELECT "id", "name", "initials", "email" FROM "people" ORDER BY "id"
+ ~ (0.000096) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE "owner_id" IN (259790, 259803, 259804, 259805, 259806, 259807, 259833) ORDER BY "id"
+ ~ (0.000083) SELECT "id", "name", "initials", "email" FROM "people" WHERE "id" = 259806 ORDER BY "id" LIMIT 1
+ ~ (0.000092) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("owner_id" = 259806 AND "state" = 'started') ORDER BY "id"
+ ~ (0.000068) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("state" = 'finished' AND "owner_id" = 259806) ORDER BY "id"
+ ~ (0.000072) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("state" IN ('delivered', 'accepted', 'rejected') AND "owner_id" = 259806) ORDER BY "id"
+ ~ (0.000074) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("owner_id" = 259806 AND "state" = 'unstarted') ORDER BY "id"
+ ~ (0.000062) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("owner_id" = 259806 AND "state" = 'unscheduled') ORDER BY "id"
+ ~ (0.000284) SELECT "id", "name", "initials", "email" FROM "people" WHERE "id" = 259806 ORDER BY "id" LIMIT 1
+ ~ (0.000108) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("owner_id" = 259806 AND "state" = 'stated') ORDER BY "id"
+ ~ (0.000068) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("state" = 'finished' AND "owner_id" = 259806) ORDER BY "id"
+ ~ (0.000067) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("state" = 'delivered' AND "owner_id" = 259806) ORDER BY "id"
+ ~ (0.000066) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("state" = 'accepted' AND "owner_id" = 259806) ORDER BY "id"
+ ~ (0.000065) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("state" = 'rejected' AND "owner_id" = 259806) ORDER BY "id"
+ ~ (0.000068) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("owner_id" = 259806 AND "state" = 'unstarted') ORDER BY "id"
+ ~ (0.000063) SELECT "id", "name", "type", "state", "url", "finished_at", "requester_id", "owner_id", "project_id" FROM "stories" WHERE ("owner_id" = 259806 AND "state" = 'unscheduled') ORDER BY "id"

@@ -1,13 +1,15 @@
 require 'libxml'
 require 'xml'
 require 'net/http'
-require 'activesupport'
 require 'haml'
 require 'dm-core'
 require 'dm-timestamps'
 require 'sinatra/base'
 
 TOKEN = '32aed710efa658397aad59c2d61f84f7'
+
+# DataMapper::Logger.new('log/sinatra.log', :debug)
+DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/scrums.sql")
 
 module Scrums
   class Application < Sinatra::Base
@@ -29,20 +31,14 @@ module Scrums
       end
     end
 
-    get '/' do
-      @started  = pivotal.started
-      @finished = pivotal.finished
-      @accepted = pivotal.accepted
-      @rejected = pivotal.rejected
-      haml :index
+    get '/dash' do
+      @people = Person.all
+      haml :dash
     end
-    
-    get '/:project_id' do
-      @started  = pivotal(params[:project_id]).started
-      @finished = pivotal(params[:project_id]).finished
-      @accepted = pivotal(params[:project_id]).accepted
-      @rejected = pivotal(params[:project_id]).rejected
-      haml :index
+
+    get '/people/:id' do
+      @person = Person.get(params[:id])
+      haml :person
     end
   end
   
@@ -61,65 +57,22 @@ module Scrums
       get("projects/#{@project_id}/stories")
     end
 
-    def started
-      get_owners_list http_get('state:started')
-    end
-
-    def finished
-      get_owners_list http_get("state:finished,delivered modified_since:#{yesterday}")
-    end
-
-    def accepted
-      get_owners_list http_get("state:accepted")
-    end
-
-    def rejected
-      get_owners_list http_get("state:rejected")
-    end
-
     private
-      def yesterday
-        DateTime.yesterday.strftime('%m/%d/%Y')
-      end
-
-      def last_week
-        DateTime.now.monday.strftime('%m/%d/%Y')
-      end
-      
       def get(path)
         response = @server.get "/services/v3/#{path}", { 'X-TrackerToken' => @token }
         response.body        
-      end
-      
-      def http_get(filter)
-        filter = CGI.escape(filter).tr('+', '%20')
-        response = @server.get "/services/v3/projects/#{@project_id}/stories?filter=#{filter}",
-          { 'X-TrackerToken' => @token }
-        response.body
-      end
-
-      def get_owners_list(response)
-        document, list = XML::Parser.string(response).parse, []
-
-        document.find('//stories/story').each do |story|
-          list << { 'owner' => (story.find('owned_by').first.content rescue 'No owner'),
-                    'name'  => (story.find('name').first.content rescue 'No name') }
-        end
-        list
-      end
+      end      
   end
 end
-
-DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/scrums.sql")
 
 class Person
   include DataMapper::Resource
     
-  property :id,         Integer, :key      => true
+  property :id,         Integer, :key      => true, :unique => true
   property :name,       String,  :required => true, :unique => true
   property :initials,   String,  :required => true
   property :email,      String,  :required => true, :unique => true
-  timestamps :at
+  # timestamps :at
   
   has n, :projects, :through => Resource
   has n, :stories, :child_key => [:owner_id]
@@ -135,7 +88,7 @@ class Person
           person = create! initialization_hash
         else
           person.projects << initialization_hash.delete(:projects).first
-          person.update_attributes!(initialization_hash)
+          person.update!(initialization_hash)
         end
         @people << person
       end
@@ -165,12 +118,12 @@ end
 class Project
   include DataMapper::Resource
     
-  property :id,               Integer, :key      => true
+  property :id,               Integer, :key      => true, :unique => true
   property :name,             String,  :required => true
   property :iteration_length, Integer
   property :week_start_day,   String
   property :current_velocity, Integer
-  timestamps :at
+  # timestamps :at
   
   has n, :people,  :through => Resource
   has n, :stories
@@ -183,7 +136,7 @@ class Project
          unless @project = get(initialization_hash[:id])
            @project = create! initialization_hash
          else
-           @project.update_attributes!(initialization_hash)
+           @project.update!(initialization_hash)
          end
        end
 
@@ -222,14 +175,14 @@ end
 class Story
   include DataMapper::Resource
     
-  property :id,         Integer, :key      => true
+  property :id,         Integer, :key      => true, :unique => true
   property :name,       String,  :required => true
   property :type,       String
   property :state,      String
   property :url,        String
   property :description,Text
   property :finished_at,DateTime
-  timestamps :at
+  # timestamps :at
     
   belongs_to :project
   belongs_to :owner,     'Person', :child_key => [:owner_id], :required  => false
@@ -243,7 +196,7 @@ class Story
          unless story = get(initialization_hash[:id])
            story = create! initialization_hash
          else
-           story.update_attributes!(initialization_hash)
+           story.update!(initialization_hash)
          end
          @stories << story
        end
