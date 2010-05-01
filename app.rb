@@ -179,7 +179,7 @@ class Story
   property :name,       String,  :required => true, :length => 255
   property :type,       String
   property :state,      String
-  property :url,        String
+  property :url,        String,  :length   => 80
   property :description,Text
   property :finished_at,DateTime
   # timestamps :at
