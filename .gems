@@ -3,3 +3,4 @@ sinatra --version 1.0
 dm-core --version 0.10.2
 haml --version 2.2.12
 dm-timestamps --version 0.10.2
+do_postgres --version 0.10.1
