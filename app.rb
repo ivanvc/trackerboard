@@ -176,7 +176,7 @@ class Story
   include DataMapper::Resource
     
   property :id,         Integer, :key      => true, :unique => true
-  property :name,       String,  :required => true
+  property :name,       String,  :required => true, :length => 255
   property :type,       String
   property :state,      String
   property :url,        String
