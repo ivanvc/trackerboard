@@ -7,6 +7,6 @@ end
 task :cron => :import do
 end
 
-task :migrate
+task :migrate do
   DataMapper.auto_migrate!
 end
