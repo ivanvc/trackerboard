@@ -1,7 +1,12 @@
 !!!
 %html
   %head
-    %title Scrums
+    %title TrackerBoard TrackBoard
     %meta{ 'http-equiv' => "Content-Type", 'content' => "text/html; charset=utf-8" }
+    %link{ 'rel' => "stylesheet", 'href' => "/stylesheets/elastic.css", 'type' => "text/css", 'media' => "screen" }
+    %link{ 'rel' => "stylesheet", 'href' => "/stylesheets/style.css", 'type' => "text/css", 'media' => "screen" }
+    %script{ 'src' => 'javascripts/jquery.js', 'language' => 'javascript' }
+    %script{ 'src' => 'javascripts/elastic.js', 'language' => 'javascript' }
   %body
-    = yield
+    %div#container
+      = yield

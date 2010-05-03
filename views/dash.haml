@@ -1,10 +1,26 @@
-- for person in @people
-  %div
-    %h2= "<a href=\"/people/#{person.id}\">#{person.name}</a> (#{person.initials})"
-    %ul
-      - for story in person.stories.all(:state => 'started')
-        %li= "#{story.state}: <a href=\"#{story.url}\">#{story.name}</a> (#{story.type})"
-      - for story in person.stories.all(:state => 'finished')
-        %li= "#{story.state}: <a href=\"#{story.url}\">#{story.name}</a> (#{story.type})"
-      - for story in person.stories.all(:state => ['delivered', 'accepted'])
-        %li= "#{story.state}: <a href=\"#{story.url}\">#{story.name}</a> (#{story.type})"
+%div.container.on-3.columns
+  - for person in @people
+    %div.column
+      %div.person
+        %div.title
+          %p= "<a href=\"/people/#{person.id}\">#{person.name}</a> (#{person.initials})"
+        - started = person.stories.all(:state => 'started')
+        - finished = person.stories.all(:state => 'finished')
+        - delivered = person.stories.all(:state => ['delivered', 'accepted'])
+        - unless started.empty?
+          %p.started Started
+          %ul
+            - for story in started
+              %li= story.to_markup
+        - unless finished.empty?
+          %p.finished Finished
+          %ul
+            - for story in finished
+              %li= story.to_markup
+        - unless delivered.empty?
+          %p.delivered Delivered
+          %ul
+            - for story in delivered
+              %li= story.to_markup
+        - if started.empty? && finished.empty? && delivered.empty?
+          %p.inactive No active stories

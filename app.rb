@@ -188,6 +188,10 @@ class Story
   belongs_to :owner,     'Person', :child_key => [:owner_id], :required  => false
   belongs_to :requester, 'Person', :child_key => [:requester_id]
   
+  def to_markup
+    "<img src=\"images/#{type}.png\" alt=\"#{type}\" /> <a href=\"#{url}\">#{name}</a>"
+  end
+  
   class << self
     def import_from_web(project_id, options = {})
        pivotal, @stories = Scrums::Pivotal.new(project_id, TOKEN), []

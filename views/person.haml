@@ -1,7 +1,7 @@
 %div
   %a{:href => '/dash'}
     Back to dash
-%div
+%div.person
   %h2= "<a href=\"/people/#{@person.id}\">#{@person.name}</a> (#{@person.initials})"
   %ul
     - for state in %w{started finished delivered accepted rejected unstarted unscheduled}
