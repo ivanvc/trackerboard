@@ -284,6 +284,7 @@ class Story
 end
 
 class Account
+  include DataMapper::Resource
   # Add authorization
   
   property :token, String, :required => true
