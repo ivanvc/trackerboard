@@ -6,13 +6,13 @@
 
 html, body {
     min-height: 100%;
+	background: #191919 url('/images/background.png');
 }
 
 body {
 	font-family: helvetica, arial, sans-serif;
 	font-size: 0.8em;
 	color: #333;
-	background: #191919 url('/images/background.png');
 }
 
 div#container {
