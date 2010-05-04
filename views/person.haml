@@ -16,6 +16,11 @@
       %ul
         - for story in @person[:delivered]
           %li= story.to_markup
+    - unless @person[:accepted].empty?
+      %p.delivered Accepted
+      %ul
+        - for story in @person[:accepted]
+          %li= story.to_markup
     - unless @person[:rejected].empty?
       %p.delivered Rejected
       %ul

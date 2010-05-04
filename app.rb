@@ -99,12 +99,13 @@ class Person
       :person      => self,
       :started     => stories.all(:state => 'started'),
       :finished    => stories.all(:state => 'finished'),
-      :delivered   => stories.all(:state => ['delivered', 'accepted']),
+      :delivered   => stories.all(:state => 'delivered'),
+      :accepted    => stories.all(:state => 'accepted'),
       :rejected    => stories.all(:state => 'rejected'),
       :unstarted   => stories.all(:state => 'unstarted'),
       :unscheduled => stories.all(:state => 'unscheduled') }
     person_hash[:empty] = person_hash[:started].empty? && person_hash[:finished].empty? && person_hash[:delivered].empty?
-    person_hash[:completely_empty] = person_hash[:empty] && person_hash[:delivered].empty? && person_hash[:rejected].empty? && person_hash[:unstarted].empty? && person_hash[:unscheduled].empty?
+    person_hash[:completely_empty] = person_hash[:empty] && person_hash[:accepted].empty? && person_hash[:delivered].empty? && person_hash[:rejected].empty? && person_hash[:unstarted].empty? && person_hash[:unscheduled].empty?
     person_hash
   end
   
