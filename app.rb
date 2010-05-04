@@ -169,6 +169,8 @@ class Project
   has n, :people,  :through => Resource
   has n, :stories
 
+  belongs_to :account, :required  => false
+
   def all_people_with_stories
     people_array = []
     people.each do |person|
