@@ -9,7 +9,7 @@ require 'sinatra/base'
 
 TOKEN = 'ef62046fe43cfb2a4adb434f7774767b'
 
-# DataMapper::Logger.new('log/sinatra.log', :debug)
+DataMapper::Logger.new('log/sinatra.log', :debug)
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/scrums.sql")
 
 module Scrums
@@ -89,6 +89,7 @@ class Person
   property :name,       String,  :required => true, :unique => true
   property :initials,   String,  :required => true
   property :email,      String,  :required => true, :unique => true
+  property :visible,    Boolean, :default  => true
   # timestamps :at
   
   has n, :projects, :through => Resource
@@ -113,18 +114,18 @@ class Person
   class << self
     
     def all_with_stories
-      people = []
+      people_array = []
       all.each do |person|
-        people << person.to_layout_hash
+        people_array << person.to_layout_hash
       end
-      people
+      people_array
     end
     
     def import_from_response(response, options = {})
       @people = []
 
       parse_document(response, options) do |initialization_hash|
-        unless person = get(initialization_hash[:id])
+        unless person = first(:email => initialization_hash[:email])
           person = create initialization_hash
         else
           person.projects << initialization_hash.delete(:projects).first
