@@ -85,11 +85,11 @@ end
 class Person
   include DataMapper::Resource
     
-  property :id,         Integer, :key      => true, :unique => true
-  property :name,       String,  :required => true
-  property :initials,   String,  :required => true
-  property :email,      String,  :required => true, :unique => true
-  property :visible,    Boolean, :default  => true
+  property :id,       Integer, :key      => true, :unique => true
+  property :name,     String,  :required => true
+  property :initials, String,  :required => true
+  property :email,    String,  :required => true, :unique => true
+  property :visible,  Boolean, :default  => true
   # timestamps :at
   
   has n, :projects, :through => Resource
@@ -129,7 +129,8 @@ class Person
           person = create initialization_hash
         else
           person.projects << initialization_hash.delete(:projects).first
-          person.update!(initialization_hash)
+          person.update(initialization_hash)
+          person.save
         end
         @people << person
       end
