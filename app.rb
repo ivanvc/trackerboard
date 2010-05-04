@@ -41,12 +41,14 @@ module Scrums
     end
 
     get '/people/:id' do
-      @person = Person.get(params[:id])
+      @person = Person.get(params[:id]).to_layout_hash
       haml :person
     end
     
     get '/projects/:id' do
       @project = Project.get(params[:id])
+      @people  = @project.all_people_with_stories
+      haml :dash
     end
     
   end
@@ -87,22 +89,26 @@ class Person
   has n, :stories, :child_key => [:owner_id]
   has n, :requested_stories, :model => 'Story', :child_key => [:requester_id]
 
+  def to_layout_hash
+    person_hash = { 
+      :person      => self,
+      :started     => stories.all(:state => 'started'),
+      :finished    => stories.all(:state => 'finished'),
+      :delivered   => stories.all(:state => ['delivered', 'accepted']),
+      :rejected    => stories.all(:state => 'rejected'),
+      :unstarted   => stories.all(:state => 'unstarted'),
+      :unscheduled => stories.all(:state => 'unscheduled') }
+    person_hash[:empty] = person_hash[:started].empty? && person_hash[:finished].empty? && person_hash[:delivered].empty?
+    person_hash[:completely_empty] = person_hash[:empty] && person_hash[:delivered].empty? && person_hash[:rejected].empty? && person_hash[:unstarted].empty? && person_hash[:unscheduled].empty?
+    person_hash
+  end
   
   class << self
     
     def all_with_stories
       people = []
       all.each do |person|
-        person_hash = { 
-          :person      => person,
-          :started     => person.stories.all(:state => 'started'),
-          :finished    => person.stories.all(:state => 'finished'),
-          :delivered   => person.stories.all(:state => ['delivered', 'accepted']),
-          :rejected    => person.stories.all(:state => 'rejected'),
-          :unstarted   => person.stories.all(:state => 'unstarted'),
-          :unscheduled => person.stories.all(:state => 'unscheduled') }
-        person_hash[:empty] = person_hash[:started].empty? && person_hash[:finished].empty? && person_hash[:delivered].empty?
-        people << person_hash
+        people << person.to_layout_hash
       end
       people
     end
@@ -154,8 +160,17 @@ class Project
   
   has n, :people,  :through => Resource
   has n, :stories
+
+  def all_people_with_stories
+    people_array = []
+    people.each do |person|
+      people_array << person.to_layout_hash
+    end
+    people_array
+  end
     
   class << self
+    
     def import_from_web(project_id, options = {})
        pivotal = Scrums::Pivotal.new(project_id, TOKEN)
 
@@ -216,7 +231,7 @@ class Story
   belongs_to :requester, 'Person', :child_key => [:requester_id]
   
   def to_markup
-    "<img src=\"images/#{type}.png\" alt=\"#{type}\" /> <a href=\"#{url}\">#{name}</a>"
+    "<img src=\"/images/#{type}.png\" alt=\"#{type}\" /> <a href=\"#{url}\">#{name}</a>"
   end
   
   class << self

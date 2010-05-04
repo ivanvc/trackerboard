@@ -27,6 +27,14 @@ div.person, div.projects {
     -webkit-border-radius: 5px;
 }
 
+div.person > h2 {
+    margin: 5px;
+}
+
+div.person > div > div.footer > p {
+    margin: 5px;
+}
+
 div.projects {
     max-width: 200px;
     margin: 5px auto;
@@ -70,7 +78,7 @@ div.person > div > ul > li {
     padding: 0.2em;
 }
 
-div.person > div > ul > li > img {
+img {
     vertical-align: bottom;
 }
 

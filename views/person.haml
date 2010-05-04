@@ -1,9 +1,41 @@
-%div
-  %a{:href => '/dash'}
-    Back to dash
 %div.person
-  %h2= "<a href=\"/people/#{@person.id}\">#{@person.name}</a> (#{@person.initials})"
-  %ul
-    - for state in %w{started finished delivered accepted rejected unstarted unscheduled}
-      - for story in @person.stories.all(:state => state)
-        %li= "#{state}: <a href=\"#{story.url}\">#{story.name}</a> (#{story.type})"
+  %h2= "<a href=\"/people/#{@person[:person].id}\">#{@person[:person].name}</a> (#{@person[:person].initials})"
+  %div
+    - unless @person[:started].empty?
+      %p.started Started
+      %ul
+        - for story in @person[:started]
+          %li= story.to_markup
+    - unless @person[:finished].empty?
+      %p.finished Finished
+      %ul
+        - for story in @person[:finished]
+          %li= story.to_markup
+    - unless @person[:delivered].empty?
+      %p.delivered Delivered
+      %ul
+        - for story in @person[:delivered]
+          %li= story.to_markup
+    - unless @person[:rejected].empty?
+      %p.delivered Rejected
+      %ul
+        - for story in @person[:rejected]
+          %li= story.to_markup
+    - unless @person[:unstarted].empty?
+      %p.delivered Unstarted
+      %ul
+        - for story in @person[:unstarted]
+          %li= story.to_markup
+    - unless @person[:unscheduled].empty?
+      %p.delivered Unscheduled
+      %ul
+        - for story in @person[:unscheduled]
+          %li= story.to_markup
+    - if @person[:completely_empty]
+      %p.inactive.vertical-center No active stories
+  
+    %div.footer
+      %p
+        %img{:src => '/images/back.png', :alt => 'back'}
+        %a{:href => '/dash'}
+          Go back to dash

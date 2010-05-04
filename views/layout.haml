@@ -5,8 +5,8 @@
     %meta{ 'http-equiv' => "Content-Type", 'content' => "text/html; charset=utf-8" }
     %link{ 'rel' => "stylesheet", 'href' => "/stylesheets/elastic.css", 'type' => "text/css", 'media' => "screen" }
     %link{ 'rel' => "stylesheet", 'href' => "/stylesheets/style.css", 'type' => "text/css", 'media' => "screen" }
-    %script{ 'src' => 'javascripts/jquery.js', 'language' => 'javascript' }
-    %script{ 'src' => 'javascripts/elastic.js', 'language' => 'javascript' }
+    %script{ 'src' => '/javascripts/jquery.js', 'language' => 'javascript' }
+    %script{ 'src' => '/javascripts/elastic.js', 'language' => 'javascript' }
   %body
     %div
       %div.columns.on-4
@@ -18,4 +18,11 @@
               %p Projects
             - for project in @projects
               %ul
-                %li= "<a href=\"/projects/#{project.id}\">#{project.name}</a>"
+                - if @project && @project.id == project.id
+                  %a{:href => "/dash"}
+                    %img{:src => '/images/accept.png', :alt => 'selected'}
+                    = project.name
+                - else
+                  %li
+                    %a{:href => "/projects/#{project.id}"}
+                      = project.name
