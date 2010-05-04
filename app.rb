@@ -4,6 +4,7 @@ require 'net/http'
 require 'haml'
 require 'dm-core'
 require 'dm-timestamps'
+require 'dm-validations'
 require 'sinatra/base'
 
 TOKEN = 'ef62046fe43cfb2a4adb434f7774767b'
@@ -124,7 +125,7 @@ class Person
 
       parse_document(response, options) do |initialization_hash|
         unless person = get(initialization_hash[:id])
-          person = create! initialization_hash
+          person = create initialization_hash
         else
           person.projects << initialization_hash.delete(:projects).first
           person.update!(initialization_hash)
