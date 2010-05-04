@@ -11,7 +11,7 @@ body {
 }
 
 div#container {
-  max-width: 960px; 
+  max-width: 980px; 
 }
 
 div.person {
@@ -36,30 +36,31 @@ div.person > div.title > p {
     margin: 0.5em;
 }
 
-div.person > p {
+div.person > div > p {
     font-weight: bold;
     margin: 0.5em 0.5em 0 0.5em;
 }
 
-div.person > p.inactive {
+div.person > div > p.inactive {
     margin: 0.5em;
     color: #4D0000;
+    text-align: center;
 }
 
-div.person > ul {
+div.person > div > ul {
     border-bottom: 1px solid #ccc;
     margin: 0.2em;
 }
 
-div.person > ul:last-child {
+div.person > div > ul:last-child {
     border-bottom: 0;
 }
 
-div.person > ul > li {
+div.person > div > ul > li {
     padding: 0.2em;
 }
 
-div.person > ul > li > img {
+div.person > div > ul > li > img {
     vertical-align: bottom;
 }
 
