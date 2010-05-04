@@ -6,7 +6,7 @@ require 'dm-core'
 require 'dm-timestamps'
 require 'sinatra/base'
 
-TOKEN = '32aed710efa658397aad59c2d61f84f7'
+TOKEN = 'ef62046fe43cfb2a4adb434f7774767b'
 
 # DataMapper::Logger.new('log/sinatra.log', :debug)
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/scrums.sql")
