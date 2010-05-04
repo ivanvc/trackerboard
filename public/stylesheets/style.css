@@ -94,3 +94,10 @@ a:hover {
 ul > li {
     list-style-type: none;
 }
+
+div.caveats {
+    margin: 0 40px;
+    font-size: 3em;
+    color: #fff;
+    text-shadow: 4px 4px 4px #000;
+}

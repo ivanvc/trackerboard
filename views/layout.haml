@@ -13,16 +13,17 @@
         %div.column.span-3#container
           = yield
         %div.column
-          %div.projects
-            %div.title
-              %p Projects
-            - for project in @projects
-              %ul
-                - if @project && @project.id == project.id
-                  %a{:href => "/dash"}
-                    %img{:src => '/images/accept.png', :alt => 'selected'}
-                    = project.name
-                - else
-                  %li
-                    %a{:href => "/projects/#{project.id}"}
+          - if @projects
+            %div.projects
+              %div.title
+                %p Projects
+              - for project in @projects
+                %ul
+                  - if @project && @project.id == project.id
+                    %a{:href => "/dash"}
+                      %img{:src => '/images/accept.png', :alt => 'selected'}
                       = project.name
+                  - else
+                    %li
+                      %a{:href => "/projects/#{project.id}"}
+                        = project.name

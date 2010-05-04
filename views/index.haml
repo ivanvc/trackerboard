@@ -1,8 +1,5 @@
-- { 'Started' => @started, 'Finished' => @finished, 'Accepted' => @accepted, 'Rejected' => @rejected }.each do |status_name, status|
-  %div
-    - unless status.empty?
-      %h1= status_name
-      %ul
-        - status.each do |story|
-          %li 
-            = story['owner'] + ': ' + story['name']
+%div.full-height
+  %div.elastic-height.caveats
+    %h1 Trackerboard
+    %p Hey! so this is it, may someday be public.
+  

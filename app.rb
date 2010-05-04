@@ -35,6 +35,11 @@ module Scrums
       @projects = Project.all
     end
 
+    get '/' do
+      @projects = nil
+      haml :index
+    end
+
     get '/dash' do
       @people   = Person.all_with_stories
       haml :dash
