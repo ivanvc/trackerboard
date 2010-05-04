@@ -30,9 +30,13 @@ module Scrums
         @pivotal[project_id.to_s] ||= Pivotal.new(project_id, '32aed710efa658397aad59c2d61f84f7')
       end
     end
+    
+    before do
+      @projects = Project.all
+    end
 
     get '/dash' do
-      @people = Person.all
+      @people   = Person.all_with_stories
       haml :dash
     end
 
@@ -40,6 +44,11 @@ module Scrums
       @person = Person.get(params[:id])
       haml :person
     end
+    
+    get '/projects/:id' do
+      @project = Project.get(params[:id])
+    end
+    
   end
   
   class Pivotal
@@ -80,6 +89,24 @@ class Person
 
   
   class << self
+    
+    def all_with_stories
+      people = []
+      all.each do |person|
+        person_hash = { 
+          :person      => person,
+          :started     => person.stories.all(:state => 'started'),
+          :finished    => person.stories.all(:state => 'finished'),
+          :delivered   => person.stories.all(:state => ['delivered', 'accepted']),
+          :rejected    => person.stories.all(:state => 'rejected'),
+          :unstarted   => person.stories.all(:state => 'unstarted'),
+          :unscheduled => person.stories.all(:state => 'unscheduled') }
+        person_hash[:empty] = person_hash[:started].empty? && person_hash[:finished].empty? && person_hash[:delivered].empty?
+        people << person_hash
+      end
+      people
+    end
+    
     def import_from_response(response, options = {})
       @people = []
 

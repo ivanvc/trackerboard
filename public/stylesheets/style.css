@@ -3,18 +3,23 @@
     margin: 0;
     padding: 0;
 }
+
+html, body {
+    height: 100%;
+}
+
 body {
 	font-family: helvetica, arial, sans-serif;
-	background-color: #fff;
 	font-size: 0.8em;
 	color: #333;
+	background: #191919 url('/images/background.png');
 }
 
 div#container {
-  max-width: 980px; 
+    max-width: 940px; 
 }
 
-div.person {
+div.person, div.projects {
     background-color: #f7f7f7;
     border: 1px solid #ccc;
     margin: 5px;
@@ -22,7 +27,12 @@ div.person {
     -webkit-border-radius: 5px;
 }
 
-div.person > div.title {
+div.projects {
+    max-width: 200px;
+    margin: 5px auto;
+}
+
+div.projects > div.title, div.person > div.title {
     border-bottom: 1px solid #ccc;
     width: 100%;
     font-weight: bold;
@@ -32,7 +42,7 @@ div.person > div.title > a {
     text-decoration: none;
 }
 
-div.person > div.title > p {
+div.projects > div.title > p, div.person > div.title > p {
     margin: 0.5em;
 }
 
