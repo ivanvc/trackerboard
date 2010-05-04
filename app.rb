@@ -86,7 +86,7 @@ class Person
   include DataMapper::Resource
     
   property :id,         Integer, :key      => true, :unique => true
-  property :name,       String,  :required => true, :unique => true
+  property :name,       String,  :required => true
   property :initials,   String,  :required => true
   property :email,      String,  :required => true, :unique => true
   property :visible,    Boolean, :default  => true
@@ -270,16 +270,26 @@ class Story
           story_hash[:state]       = story.find('current_state').first.content
           story_hash[:description] = story.find('description').first.content
           story_hash[:name]        = story.find('name').first.content
-          story_hash[:requester]   = Person.first(:name => story.find('requested_by').first.content)
-          story_hash[:owner]       = if story.find('owned_by').first
-            Person.first(:name => story.find('owned_by').first.content)
-          end
           story_hash[:project]     = Project.get(story.find('project_id').first.content)
+          story_hash[:requester]   = story_hash[:project].people.first\
+            :name => story.find('requested_by').first.content
+          story_hash[:owner]       = if story.find('owned_by').first
+            story_hash[:project].people.first(:name => story.find('owned_by').first.content)
+          end
           
           yield(story_hash)
         end
       end
   end
+end
+
+class Account
+  # Add authorization
+  
+  property :token, String, :required => true
+  
+  has n, :projects
+  
 end
 
 DataMapper.auto_upgrade!
