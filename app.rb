@@ -125,10 +125,14 @@ class Person
       @people = []
 
       parse_document(response, options) do |initialization_hash|
-        unless person = first(:email => initialization_hash[:email])
+        puts "Updating #{initialization_hash.inspect}"
+        person = first(:email => initialization_hash[:email])
+        unless person
+          puts "Person: #{person.inspect}"
           person = create initialization_hash
         else
           person.projects << initialization_hash.delete(:projects).first
+          puts "Updating #{person.projects.inspect}"
           person.update(initialization_hash)
           person.save
         end
