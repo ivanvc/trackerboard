@@ -286,7 +286,7 @@ end
 class Account
   include DataMapper::Resource
   # Add authorization
-  
+  property :id,    Serial
   property :token, String, :required => true
   
   has n, :projects
