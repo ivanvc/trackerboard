@@ -1,0 +1,6 @@
+%form.register{"accept-charset" => "UTF-8", :action => "/accounts", :method => "post"}
+  %p You are not registered, please confirm that you want to sign up, and provide your token.
+  %label{:for => "account[token]"} Your PivotalTraker token:
+  %input{:type => "text", :name => "account[token]"}
+  %input{:type => "hidden", :value => @identifier, :name => "account[openid]"}
+  %input{:type => "submit", :value => "Sign Up"}/
