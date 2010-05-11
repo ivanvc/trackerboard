@@ -1,0 +1,10 @@
+h1. Trackerboard
+
+This is an experimental dashboard for Pivotal Tracker projects. It contains useful information for Project Managers, so they can see what each member of the team/company is working on.
+
+h2. Installation/Configuration
+
+* The first thing you need is to rename token.yml.sample to token.yml, and replace the sample token with a real one with access to the projects you want to monitor.
+* Second step, is to import projects, do it with @rake import project_id=1234567@ (Replace 123456 with your desired project id)
+* Finally to update the stories, you can run @rake update@ or @rake cron@
+* Run rackup, and that's it, point your browser to http://localhost:9292/dash
