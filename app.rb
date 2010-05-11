@@ -10,7 +10,11 @@ require 'sinatra/base'
 require 'lib/tracker'
 Dir[Dir.pwd + '/lib/models/*'].each { |file| require file }
 
-TOKEN = YAML.load(File.read 'token.yml')['token'] rescue ''
+TOKEN = if ENV['TOKEN']
+  ENV['TOKEN']
+else
+  YAML.load(File.read 'token.yml')['token'] rescue ''
+end
 
 DataMapper::Logger.new('log/sinatra.log', ENV['RACK_ENV'] == 'production' ? :info : :debug)
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/scrums.sql")
