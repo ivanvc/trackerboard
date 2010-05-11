@@ -6,25 +6,18 @@ require 'dm-core'
 require 'dm-timestamps'
 require 'dm-validations'
 require 'sinatra/base'
-require 'openid'
-require 'openid/store/filesystem'
-require 'openid_dm_store'
 
 TOKEN = 'ef62046fe43cfb2a4adb434f7774767b'
 
 DataMapper::Logger.new('log/sinatra.log', :debug)
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/scrums.sql")
 
-OpenIDDataMapper::Association.auto_migrate!
-OpenIDDataMapper::Nonce.auto_migrate!
- 
 module Scrums
   class Application < Sinatra::Base
     configure do
       set :app_file, File.expand_path(File.dirname(__FILE__) + '/app.rb')
       set :public,   File.expand_path(File.dirname(__FILE__) + '/public')
       set :views,    File.expand_path(File.dirname(__FILE__) + '/views')
-      enable :sessions
       disable :run, :reload
     end
     
@@ -64,72 +57,6 @@ module Scrums
       haml :dash
     end
     
-    # OpenID
-    def openid_consumer
-      @openid_consumer ||= OpenID::Consumer.new(session, OpenIDDataMapper::DataMapperStore.new)  
-    end
-
-    def root_url
-      request.url.match(/(^.*\/{2}[^\/]*)/)[1]
-    end
-
-    def logged_in?
-      !session[:account_id].nil?
-    end
-
-    get '/logout' do
-      session[:user] = nil
-      redirect '/'
-    end
-
-    # Send everything else to the super app
-    get '/login' do    
-      haml :login
-    end
-
-    post '/login' do
-      openid = params[:openid_identifier]
-      begin
-        oidreq = openid_consumer.begin(openid)
-      rescue OpenID::DiscoveryFailure => why
-        "Sorry, we couldn't find your identifier '#{openid}'"
-      else
-        # oidreq.add_extension_arg('sreg','required','nickname')
-        # oidreq.add_extension_arg('sreg','optional','fullname, email')
-        redirect oidreq.redirect_url(root_url, root_url + "/login/complete")
-      end
-    end
-
-    post '/accounts' do
-      logger.info "PARAMS: #{params['account']}"
-      account = Account.create!(params['account'])
-      session[:account_id] = account['id']
-      redirect '/dash'
-    end
-
-    get '/login/complete' do
-      oidresp = openid_consumer.complete(params, request.url)
-
-      case oidresp.status
-        when OpenID::Consumer::FAILURE
-          "Sorry, we could not authenticate you with the identifier '{openid}'."
-        when OpenID::Consumer::SETUP_NEEDED
-          "Immediate request failed - Setup Needed"
-        when OpenID::Consumer::CANCEL
-          "Login cancelled."
-        when OpenID::Consumer::SUCCESS
-          # Access additional informations:
-          # puts params['openid.sreg.nickname']
-          # puts params['openid.sreg.fullname']
-          @identifier = oidresp.display_identifier
-          if account = Account.first(:openid => @identifier)
-            session[:account_id] = account['id']
-            redirect '/dash'
-          else
-            haml :new_account
-          end
-      end
-    end
   end
   
   class Pivotal
@@ -244,9 +171,10 @@ class Project
   property :current_velocity, Integer
   # timestamps :at
   
-  has n, :people,   :through => Resource
+  has n, :people,  :through => Resource
   has n, :stories
-  has n, :accounts, :through => Resource
+
+  belongs_to :account, :required  => false
 
   def all_people_with_stories
     people_array = []
@@ -365,11 +293,11 @@ end
 class Account
   include DataMapper::Resource
   # Add authorization
-  property :id,     Serial
-  property :token,  String, :required => true
-  property :openid, String, :length   => 255, :unique => true
+  property :id,    Serial
+  property :token, String, :required => true
   
-  has n, :projects, :through => Resource
+  has n, :projects
+  
 end
 
 DataMapper.auto_upgrade!
