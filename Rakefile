@@ -1,11 +1,9 @@
 require 'app'
 task :import do
-  Project.import_from_web(77939, :import_people => true)
-  Story.import_from_web(77939)
-  Project.import_from_web(71754, :import_people => true)
-  Story.import_from_web(71754)
-  Project.import_from_web(73652, :import_people => true)
-  Story.import_from_web(73652)
+  Project.all.each do |project|
+    Project.import_from_web(project.id, :import_people => true)
+    Story.import_from_web(project.id)
+  end  
 end
 
 task :cron => :import do
